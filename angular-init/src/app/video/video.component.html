@@ -1,0 +1,61 @@
+<div class="container center-flex">
+  <h3>{{ video.title }}</h3>
+  <img [src]="video.imgPath" width="20%" />
+  <p>{{ video.category }}</p>
+
+  <!-- Modal trigger button -->
+  <button
+    type="button"
+    class="btn btn-primary btn-lg"
+    data-bs-toggle="modal"
+    data-bs-target="#modalId"
+  >
+    Description
+  </button>
+</div>
+
+<!-- Modal Body -->
+<!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
+<div
+  class="modal fade"
+  id="modalId"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modalTitleId"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-sm"
+    role="document"
+  >
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalTitleId">{{video.title}}</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">{{video.description}}</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Fermer
+        </button>
+        <button type="button" class="btn" (click)="onAddLike()" [style]="{'background-color':like ? 'red' : 'white'}">&#9825;</button>
+        <button type="button" [class]="note == 0 ? 'btn disabled' : 'btn'" (click)="minusNote()" [style]="{'background-color':note == 0 ? 'grey' : 'blue'}">-</button>
+        <p>{{note}}</p>
+        <button type="button" [class]="note == 5 ? 'btn disabled' : 'btn'" (click)="plusNote()" [style]="{'background-color':note == 5 ? 'grey' : 'blue'}">+</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Optional: Place to the bottom of scripts -->
+<script>
+  const myModal = new bootstrap.Modal(
+    document.getElementById("modalId"),
+    options
+  );
+</script>
