@@ -2,13 +2,19 @@
   <h3>{{ video.title }}</h3>
   <img [src]="video.imgPath" width="20%" />
   <p>{{ video.category }}</p>
+  @if (video.note) {
+    <p [style]="{'color': video.note <=2 ? 'red' : 'green'}">Note: {{ video.note }}</p>
+    }
+    @else {
+      <p>pas notée</p>
+    }
 
   <!-- Modal trigger button -->
   <button
     type="button"
     class="btn btn-primary btn-lg"
     data-bs-toggle="modal"
-    data-bs-target="#modalId"
+    [attr.data-bs-target]="'#modalId' + video.id"
   >
     Description
   </button>
@@ -18,10 +24,10 @@
 <!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
 <div
   class="modal fade"
-  id="modalId"
+  id= "modalId{{video.id}}"
   tabindex="-1"
   role="dialog"
-  aria-labelledby="modalTitleId"
+  [attr.aria-labelledby]="'modalTitleId' + video.id"
   aria-hidden="true"
 >
   <div
@@ -30,7 +36,7 @@
   >
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modalTitleId">{{video.title}}</h5>
+        <h5 class="modal-title" id="modalTitleId{{ video.id }}">{{video.title}}</h5>
         <button
           type="button"
           class="btn-close"
@@ -43,10 +49,18 @@
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
           Fermer
         </button>
-        <button type="button" class="btn" (click)="onAddLike()" [style]="{'background-color':like ? 'red' : 'white'}">&#9825;</button>
-        <button type="button" [class]="note == 0 ? 'btn disabled' : 'btn'" (click)="minusNote()" [style]="{'background-color':note == 0 ? 'grey' : 'blue'}">-</button>
-        <p>{{note}}</p>
-        <button type="button" [class]="note == 5 ? 'btn disabled' : 'btn'" (click)="plusNote()" [style]="{'background-color':note == 5 ? 'grey' : 'blue'}">+</button>
+        <a data-bs-dismiss="modal" type="button" class="btn" routerLink={{video.id}}>Description complète</a>
+        <button type="button" class="btn" (click)="video.onAddLike()" [style]="{'background-color':video.like ? 'red' : 'white'}">&#9825;</button>
+        <button type="button" [class]="video.note == 1 ? 'btn disabled' : 'btn'" (click)="video.minusNote()" [style]="{'background-color':video.note == 1 ? 'grey' : 'blue'}">-</button>
+        
+          @if (video.note != null) {
+            <p>{{video.note}}</p>
+          }
+          @else {
+            <p>?</p>
+          }
+        
+        <button type="button" [class]="video.note == 5 ? 'btn disabled' : 'btn'" (click)="video.plusNote()" [style]="{'background-color':video.note == 5 ? 'grey' : 'blue'}">+</button>
       </div>
     </div>
   </div>
@@ -55,7 +69,7 @@
 <!-- Optional: Place to the bottom of scripts -->
 <script>
   const myModal = new bootstrap.Modal(
-    document.getElementById("modalId"),
+    document.getElementById("modalId"+video.id),
     options
   );
 </script>
